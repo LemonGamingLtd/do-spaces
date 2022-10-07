@@ -76,7 +76,15 @@ host_bucket = %(bucket).${ENDPOINT}
 CONFIG
 
 S3="s3://$DO_NAME/"
-UPDATES=$(s3cmd --no-preserve --no-check-md5 --no-progress --recursive --exclude=.git $DELETE_FLAG $ACCESS_FLAG $HEADER_FLAG sync $LOCAL_DIR $S3$SPACE_DIR)
+S3_PATH=$S3$SPACE_DIR
+
+if [ -z "$DELETE_FILE" ]; then
+  DELETE_UPDATES=$(s3cmd del --recursive $S3_PATH)
+  echo 'Deleted successfully file in DigitalOcean Space:'
+  echo "$DELETE_UPDATES"
+fi
+
+UPDATES=$(s3cmd --no-preserve --no-check-md5 --no-progress --recursive --exclude=.git $DELETE_FLAG $ACCESS_FLAG $HEADER_FLAG sync $LOCAL_DIR $S3_PATH)
 DO_FILES=''
 CF_URLS=''
 echo 'Changes successfully updated in DigitalOcean Space:'
