@@ -78,7 +78,7 @@ CONFIG
 S3="s3://$DO_NAME/"
 S3_PATH=$S3$SPACE_DIR
 
-if [ -z "$DELETE_FILE" ]; then
+if [ -n "$DELETE_FILE" ]; then
   DELETE_UPDATES=$(s3cmd del --recursive $S3_PATH/$DELETE_FILE)
   echo 'Deleted successfully file in DigitalOcean Space:'
   echo "$DELETE_UPDATES"
